@@ -16,7 +16,7 @@ class Simulation:
         self.xMax=1.0
         self.yMin=-1.0
         self.yMax=1.0
-        self.boundary=np.array([0,0]) # fixme: Figure out how to declare it as empty
+        self.boundary=np.empty([0]) # fixme: Figure out how to declare it as empty
 
     def setRunNumber(self,runNum):
         self.runNum=runNum
@@ -60,8 +60,8 @@ class Simulation:
     def setInitialAcceleration(self,aVec_init):
         self.aVec_init = aVec_init
 
-    def addBoundary(self,boundary):
-        np.append(self.boundary,boundary) #Fixme: adding boundaries not working
+    def setBoundary(self,boundary):
+        self.boundary=boundary #Fixme: adding boundaries not working
 
 
     def start(self):
@@ -74,6 +74,8 @@ class Simulation:
             pVec=p.getPos()
             fig.clear()
             plt.scatter(pVec[0],pVec[1])
+            for i in self.boundary:
+                plt.plot(i[0],i[1],'k-',lw=2)
             plt.xlim(self.xMin,self.xMax)
             plt.ylim(self.yMin, self.yMax)
             plt.grid()
