@@ -11,6 +11,10 @@ class Simulation:
         self.pVec_init=[0.1,0.2]
         self.vVec_init=[0.3,0.4]
         self.aVec_init=[0.5,0.6]
+        self.worldSize=[[-1.0,1.0], [-1.0,1.0]] # x1->x2,y1->y2
+
+    def setWorldSize(self,worldSize):
+        self.worldSize=worldSize
 
     def start(self):
         x = np.linspace(0, 10*np.pi, 100)
@@ -22,8 +26,8 @@ class Simulation:
             pVec=p.getPos()
             fig.clear()
             plt.scatter(pVec[0],pVec[1])
-            plt.xlim(-1, 1)
-            plt.ylim(-1, 1)
+            plt.xlim(self.worldSize[0][0], self.worldSize[0][1])
+            plt.ylim(self.worldSize[1][0], self.worldSize[1][1])
             plt.grid()
             plt.pause(0.1)
             p.takeStep(self.tStep)
