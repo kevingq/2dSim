@@ -1,7 +1,7 @@
 from Particle import Particle
 import matplotlib.pyplot as plt
 import numpy as np
-import time
+
 class Simulation:
     def __init__(self,runNum):
         self.runNum=runNum
