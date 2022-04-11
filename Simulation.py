@@ -9,13 +9,14 @@ class Simulation:
         self.tStop=5.0
         self.tStep=0.1
         self.tCurr=self.tStart
-        self.pVec_init=[0.1,0.2]
-        self.vVec_init=[0.3,0.4]
-        self.aVec_init=[0.5,0.6]
+        self.pVec_init=np.array([1.0,1.0])
+        self.vVec_init=np.array([1.0,1.0])
+        self.aVec_init=np.array([1.0,1.0])
         self.xMin=-1.0 # x1->x2,y1->y2
         self.xMax=1.0
         self.yMin=-1.0
         self.yMax=1.0
+        self.boundary=np.array([0,0]) # fixme: Figure out how to declare it as empty
 
     def setRunNumber(self,runNum):
         self.runNum=runNum
@@ -59,8 +60,13 @@ class Simulation:
     def setInitialAcceleration(self,aVec_init):
         self.aVec_init = aVec_init
 
+    def addBoundary(self,boundary):
+        np.append(self.boundary,boundary) #Fixme: adding boundaries not working
+
+
     def start(self):
         print("Starting simulation",self.runNum)
+        print("Boundaries defined: ",self.boundary)
         plt.ion()
         fig=plt.figure()
         p=Particle(0,self.pVec_init,self.vVec_init,self.aVec_init)
