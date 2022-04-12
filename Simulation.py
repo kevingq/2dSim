@@ -2,6 +2,8 @@ from Particle import Particle
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Class definition for object: Simulation
+# Description: Defined as empty 2D space with set dimensions
 class Simulation:
     def __init__(self,runNum):
         self.runNum=runNum
@@ -12,11 +14,11 @@ class Simulation:
         self.pVec_init=np.array([1.0,1.0])
         self.vVec_init=np.array([1.0,1.0])
         self.aVec_init=np.array([1.0,1.0])
-        self.xMin=-1.0 # x1->x2,y1->y2
+        self.xMin=-1.0 # world size boundaries
         self.xMax=1.0
         self.yMin=-1.0
         self.yMax=1.0
-        self.boundary=np.empty([0]) # fixme: Figure out how to declare it as empty
+        self.boundaries=np.empty([0]) # fixme: Figure out how to declare it as empty
 
     def setRunNumber(self,runNum):
         self.runNum=runNum
@@ -60,26 +62,29 @@ class Simulation:
     def setInitialAcceleration(self,aVec_init):
         self.aVec_init = aVec_init
 
-    def setBoundary(self,boundary):
-        self.boundary=boundary #Fixme: adding boundaries not working
-
+    def setBoundaries(self,boundaries):
+        self.boundaries=boundaries
 
     def start(self):
+        # Run the simulation based on set parameters
         print("Starting simulation",self.runNum)
-        print("Boundaries defined: ",self.boundary)
         plt.ion()
         fig=plt.figure()
+
+        # Create a particle with position, velocity, and acceleration
         p=Particle(0,self.pVec_init,self.vVec_init,self.aVec_init)
+
+        # Increment time on each loop until stop time reached
         while self.tCurr < self.tStop:
             pVec=p.getPos()
             fig.clear()
             plt.scatter(pVec[0],pVec[1])
-            for i in self.boundary:
-                plt.plot(i[0],i[1],'k-',lw=2)
             plt.xlim(self.xMin,self.xMax)
             plt.ylim(self.yMin, self.yMax)
             plt.grid()
             plt.pause(0.1)
-            p.takeStep(self.tStep)
+            # Update kinematics of particle
+            p.takeStep(self.tStep,self.boundaries)
             self.tCurr=self.tCurr+self.tStep
+
         print("Simulation finished after",self.tCurr-self.tStart,"seconds")
