@@ -1,3 +1,5 @@
+import numpy as np
+
 class Particle:
     def __init__(self,pNum,pVec,vVec,aVec):
         self.pNum = pNum
@@ -15,5 +17,5 @@ class Particle:
         return self.aVec
 
     def takeStep(self,tStep):
-        self.pVec[0]=self.pVec[0] + self.vVec[0]*tStep
-        self.pVec[1]=self.pVec[1] + self.vVec[1]*tStep
+        self.vVec=np.add(self.vVec,self.aVec*tStep)
+        self.pVec=np.add(self.pVec,self.vVec*tStep)
