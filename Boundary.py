@@ -11,5 +11,5 @@ class Boundary:
     def getBoundary(self):
         return self.line
 
-    def getIntersection(line): # get intersection between this object and a given line
+    def getIntersection(self,line): # get intersection between this object and a given line
         return false
