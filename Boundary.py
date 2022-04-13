@@ -12,4 +12,4 @@ class Boundary:
         return self.line
 
     def getIntersection(self,line): # get intersection between this object and a given line
-        return false
+        return False

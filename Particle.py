@@ -1,5 +1,4 @@
 import numpy as np
-from functions import standardForm
 
 # Class definition for object: Particle
 # Description: Have a defined position, velocity, acceleration, a method
@@ -22,7 +21,7 @@ class Particle:
     def getAcc(self):
         return self.aVec
 
-    def standardForm(line):
+    def standardForm(self,line):
         x1=line[0][0]
         x2=line[0][1]
         y1=line[1][0]
@@ -33,15 +32,18 @@ class Particle:
         return np.array([a,b,c])
 
     def willCollide(self,pVec_pred,boundary):
+        bx1=boundary[0][0]
+        bx2=boundary[0][1]
+        by1=boundary[1][0]
+        by2=boundary[1][1]
+        tan_bound="Normal vector to collision: Not yet implemented"
         px1=self.pVec[0]
         py1=self.pVec[1]
         px2=pVec_pred[0]
         py2=pVec_pred[1]
         pChange=np.array([[px1,px2],[py1,py2]])
-        l1=standardForm(boundary)
-        l2=standardForm(pChange)
-        print(l1[0],",",l1[1])
-        print(l2[0],",",l2[1])
+        l1=self.standardForm(boundary)
+        l2=self.standardForm(pChange)
         A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
         b=np.array([[-l1[2]],[-l2[2]]])
         try:
@@ -50,12 +52,12 @@ class Particle:
             distP2_to_I=np.linalg.norm(np.array([[x[0]-px2],[x[1]-py2]]))
             distP1_to_P2=np.linalg.norm(np.array([[px1-px2],[py1-py2]]))
             minDistToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
-            if minDistToBoundary < 0.01:
-                return True
+            if minDistToBoundary < 0.08:
+                return [True,tan_bound]
             else:
-                return False
+                return [False,tan_bound]
         except :
-            return False
+            return [False,tan_bound]
 
 
 
@@ -63,9 +65,14 @@ class Particle:
         # Fixme: Test if vector [pVec_pred - pVec] crosses any boundaries
         vVec_pred=np.add(self.vVec,self.aVec*tStep)
         pVec_pred=np.add(self.pVec,self.vVec*tStep)
-        if self.willCollide(pVec_pred,boundaries[0].getBoundary()):
-            self.vVec=-vVec_pred
-            self.pVec=np.add(self.pVec,self.vVec*tStep)
-        else:
-            self.vVec=vVec_pred
-            self.pVec=pVec_pred
+        for b_obj in boundaries:
+            b=b_obj.getBoundary()
+            collision=self.willCollide(pVec_pred,b)
+            collisionFound=collision[0]
+            if collisionFound:
+                print(collision[1])
+                self.vVec=-vVec_pred
+                self.pVec=np.add(self.pVec,self.vVec*tStep)
+                return True
+        self.vVec=vVec_pred
+        self.pVec=pVec_pred
