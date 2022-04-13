@@ -69,10 +69,13 @@ class Simulation:
             pVec=p.getPos()
             fig.clear()
             plt.scatter(pVec[0],pVec[1])
+            for b_obj in self.boundaries:
+                b=b_obj.getBoundary()
+                plt.plot(b[0],b[1],'k-',lw=2)
             plt.xlim(self.xMin,self.xMax)
             plt.ylim(self.yMin, self.yMax)
             plt.grid()
-            plt.pause(1.0)
+            plt.pause(0.01)
             # Update kinematics of particle
             p.takeStep(self.tStep,self.boundaries)
             self.tCurr=self.tCurr+self.tStep
