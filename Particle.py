@@ -42,13 +42,30 @@ class Particle:
         l2=standardForm(pChange)
         print(l1[0],",",l1[1])
         print(l2[0],",",l2[1])
-        #A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
-        #b=np.array([[-l1[2]],[-l2[2]]])
+        A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
+        b=np.array([[-l1[2]],[-l2[2]]])
+        try:
+            x=np.linalg.solve(A,b)
+            distP1_to_I=np.linalg.norm(np.array([[x[0]-px1],[x[1]-py1]]))
+            distP2_to_I=np.linalg.norm(np.array([[x[0]-px2],[x[1]-py2]]))
+            distP1_to_P2=np.linalg.norm(np.array([[px1-px2],[py1-py2]]))
+            minDistToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
+            if minDistToBoundary < 0.01:
+                return True
+            else:
+                return False
+        except :
+            return False
+
+
 
     def takeStep(self,tStep,boundaries):
         # Fixme: Test if vector [pVec_pred - pVec] crosses any boundaries
         vVec_pred=np.add(self.vVec,self.aVec*tStep)
         pVec_pred=np.add(self.pVec,self.vVec*tStep)
-        self.willCollide(pVec_pred,boundaries[0].getBoundary())
-        self.vVec=vVec_pred
-        self.pVec=pVec_pred
+        if self.willCollide(pVec_pred,boundaries[0].getBoundary()):
+            self.vVec=-vVec_pred
+            self.pVec=np.add(self.pVec,self.vVec*tStep)
+        else:
+            self.vVec=vVec_pred
+            self.pVec=pVec_pred
