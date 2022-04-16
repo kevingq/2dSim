@@ -56,23 +56,19 @@ class Particle:
         A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
         b=np.array([[-l1[2]],[-l2[2]]])
         x=np.empty([0,0])
-        #try:
-        if True:
+        try:
             x=np.linalg.solve(A,b)
             distP1_to_I=np.linalg.norm(np.array([[x[0]-bx1],[x[1]-by1]]))
             distP2_to_I=np.linalg.norm(np.array([[x[0]-bx2],[x[1]-by2]]))
             distP1_to_P2=np.linalg.norm(np.array([[bx1-bx2],[by1-by2]]))
             minDistIntersectToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
             minDistParticleToBoundary=abs(l1[0]*px2+l1[1]*py2+l1[2])/math.sqrt(math.pow(l1[0],2)+math.pow(l1[1],2))
-            print("minDistParticleToBoundary:",minDistParticleToBoundary, "minDistIntersectToBoundary:",minDistIntersectToBoundary)
-
             if minDistIntersectToBoundary < 0.01 and minDistParticleToBoundary<0.1:
-                print("Collision!!")
                 return [True,x]
             else:
                 return [False,x]
-        #except :
-        #    return [False,x]
+        except :
+            return [False,x]
 
     def takeStep(self,tStep,boundaries):
         # Fixme: Test if vector [pVec_pred - pVec] crosses any boundaries
