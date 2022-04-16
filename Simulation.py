@@ -55,11 +55,12 @@ class Simulation:
         self.aVec_init = aVec_init
     def setBoundaries(self,boundaries):
         self.boundaries=boundaries
+
     def start(self):
         # Run the simulation based on set parameters
         print("Starting simulation",self.runNum)
         plt.ion()
-        fig=plt.figure()
+        fig, ax = plt.subplots()
 
         # Create a particle with position, velocity, and acceleration
         p=Particle(0,self.pVec_init,self.vVec_init,self.aVec_init)
@@ -69,6 +70,12 @@ class Simulation:
             pVec=p.getPos()
             fig.clear()
             plt.scatter(pVec[0],pVec[1])
+
+            acc=np.linalg.norm(p.getAcc())
+            vel=np.linalg.norm(p.getVel())
+            pos=np.linalg.norm(p.getPos())
+            textStr = '$time:%.2f\:s$\n$acc:%.2f\:m/s^2$\n$vel:%.2f\:m/s$\n$pos:%.2f\:m$' %(self.tCurr,acc,vel,pos)
+            plt.text(self.xMin+abs(self.xMin)*0.10, self.yMax-abs(self.yMax)*0.55, textStr)
             for b_obj in self.boundaries:
                 b=b_obj.getBoundary()
                 plt.plot(b[0],b[1],'k-',lw=2)
