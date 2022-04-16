@@ -4,19 +4,33 @@ import numpy as np
 sim = Simulation(0)
 # Set simulation parameters (overwrite default)
 sim.setInitialPosition(np.array([0.0,0.0]))
+<<<<<<< HEAD
 sim.setInitialVelocity(np.array([2.0,2.0]))
 sim.setInitialAcceleration(np.array([0.0,-9.81]))
 sim.setStepTime(0.03)
 sim.setWorldSize([[-2.0, 4.0],[-2.0,2.0]])
+=======
+sim.setInitialVelocity(np.array([2.5,3.5]))
+sim.setInitialAcceleration(np.array([0.0,-9.81]))
+sim.setStepTime(0.01)
+sim.setWorldSize([[-2.0, 2.0],[-2.0,2.0]])
+>>>>>>> 811cd89480dd47f7b58955c1c2408969ac5b2683
 sim.setStartTime(0.0)
 sim.setStopTime(3.0)
 
 # Define any walls in the world
+<<<<<<< HEAD
 b1=Boundary('b1','line',np.array([[-2.0,1.0],[-1.0,-1.0]]))
 b2=Boundary('b1','line',np.array([[1.0,3.0],[-1.0,0.0]]))
 
+=======
+b2=Boundary('b1','line',np.array([[-1.0,1.0],[-1.0,-1.0]]))
+b1=Boundary('b2','line',np.array([[1.0,1.0],[-1.0,1.0]]))
+b3=Boundary('b3','line',np.array([[1.0,-1.0],[1.0,1.0]]))
+b4=Boundary('b4','line',np.array([[-1.0,-1.0],[1.0,-1.0]]))
+>>>>>>> 811cd89480dd47f7b58955c1c2408969ac5b2683
 # Create array of boundaries and add them to the simulation
-boundaries = np.array([b1,b2])
+boundaries = np.array([b1,b2,b3,b4])
 sim.setBoundaries(boundaries)
 
 # Start the simulation
