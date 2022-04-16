@@ -21,6 +21,13 @@ class Particle:
     def getAcc(self):
         return self.aVec
 
+    def normal(self,v):
+        dir_y=(v[1][1]-v[1][0])
+        dir_x=(v[0][1]-v[0][0])
+        perp_dir=np.array([-dir_y,dir_x]) # direction vector of normal
+        perp_dir=(1/np.linalg.norm(perp_dir))*perp_dir # set magnitude to 1
+        return perp_dir
+
     def standardForm(self,line):
         x1=line[0][0]
         x2=line[0][1]
@@ -36,7 +43,6 @@ class Particle:
         bx2=boundary[0][1]
         by1=boundary[1][0]
         by2=boundary[1][1]
-        tan_bound="Normal vector to collision: Not yet implemented"
         px1=self.pVec[0]
         py1=self.pVec[1]
         px2=pVec_pred[0]
@@ -46,18 +52,20 @@ class Particle:
         l2=self.standardForm(pChange)
         A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
         b=np.array([[-l1[2]],[-l2[2]]])
+        x=np.empty([0,0])
         try:
             x=np.linalg.solve(A,b)
             distP1_to_I=np.linalg.norm(np.array([[x[0]-px1],[x[1]-py1]]))
             distP2_to_I=np.linalg.norm(np.array([[x[0]-px2],[x[1]-py2]]))
             distP1_to_P2=np.linalg.norm(np.array([[px1-px2],[py1-py2]]))
             minDistToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
+
             if minDistToBoundary < 0.08:
-                return [True,tan_bound]
+                return [True,x]
             else:
-                return [False,tan_bound]
+                return [False,x]
         except :
-            return [False,tan_bound]
+            return [False,x]
 
 
 
@@ -70,8 +78,10 @@ class Particle:
             collision=self.willCollide(pVec_pred,b)
             collisionFound=collision[0]
             if collisionFound:
-                print(collision[1])
-                self.vVec=-vVec_pred
+                xI=collision[1][0]
+                yI=collision[1][1]
+                n=self.normal(b)
+                self.vVec=n*np.linalg.norm(vVec_pred)
                 self.pVec=np.add(self.pVec,self.vVec*tStep)
                 return True
         self.vVec=vVec_pred
