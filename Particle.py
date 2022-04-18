@@ -46,8 +46,11 @@ class Particle:
         bx2=boundary[0][1]
         by1=boundary[1][0]
         by2=boundary[1][1]
+<<<<<<< HEAD
 
         tan_bound="Normal vector to collision: Not yet implemented"
+=======
+>>>>>>> fa29c2534ad76ea162f837a75b639aeda0e31221
         px1=self.pVec[0]
         py1=self.pVec[1]
         px2=pVec_pred[0]
@@ -67,16 +70,23 @@ class Particle:
             minDistParticleToBoundary=abs(l1[0]*px2+l1[1]*py2+l1[2])/math.sqrt(math.pow(l1[0],2)+math.pow(l1[1],2))
             if minDistIntersectToBoundary < 0.01 and minDistParticleToBoundary<0.1:
                 return [True,x]
+<<<<<<< HEAD
             else:
                 return [False,x]
         except :
             return [False,x]
             if minDistToBoundary < 0.08:
                 return [True,tan_bound]
+=======
+>>>>>>> fa29c2534ad76ea162f837a75b639aeda0e31221
             else:
-                return [False,tan_bound]
+                return [False,x]
         except :
+<<<<<<< HEAD
             return [False,tan_bound]
+=======
+            return [False,x]
+>>>>>>> fa29c2534ad76ea162f837a75b639aeda0e31221
 
     def takeStep(self,tStep,boundaries):
         # Fixme: Test if vector [pVec_pred - pVec] crosses any boundaries
@@ -94,8 +104,11 @@ class Particle:
                     n=self.normal(-b)
                 theta=np.arccos(self.dotProd(-vVec_pred,n)/np.linalg.norm(vVec_pred))*180/math.pi
                 self.vVec=n*np.linalg.norm(vVec_pred)
+<<<<<<< HEAD
                 print(collision[1])
                 self.vVec=-vVec_pred
+=======
+>>>>>>> fa29c2534ad76ea162f837a75b639aeda0e31221
                 self.pVec=np.add(self.pVec,self.vVec*tStep)
                 if(b_obj.getType()=='stop'):
                     print("You win!")
