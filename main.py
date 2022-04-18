@@ -26,7 +26,7 @@ b1=Boundary('b2','line',np.array([[1.0,1.0],[-1.0,1.0]]))
 b3=Boundary('b3','line',np.array([[1.0,-1.0],[1.0,1.0]]))
 b4=Boundary('b4','line',np.array([[-1.0,-1.0],[1.0,-1.0]]))
 # Create array of boundaries and add them to the simulation
-boundaries = np.array([b1,b2,b3,b4])
+boundaries = np.array([b1,b2])
 sim.setBoundaries(boundaries)
 
 # Start the simulation
