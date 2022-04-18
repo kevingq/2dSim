@@ -77,8 +77,9 @@ class Simulation:
             textStr = '$time:%.2f\:s$\n$acc:%.2f\:m/s^2$\n$vel:%.2f\:m/s$\n$pos:%.2f\:m$' %(self.tCurr,acc,vel,pos)
             plt.text(self.xMin+abs(self.xMin)*0.10, self.yMax-abs(self.yMax)*0.55, textStr)
             for b_obj in self.boundaries:
-                b=b_obj.getBoundary()
-                plt.plot(b[0],b[1],'k-',lw=2)
+                boundary=b_obj.getBoundary()
+                color=b_obj.getColor()
+                plt.plot(boundary[0],boundary[1],color,lw=2)
             plt.xlim(self.xMin,self.xMax)
             plt.ylim(self.yMin, self.yMax)
             plt.grid()
