@@ -1,5 +1,5 @@
 import numpy as np
-
+import math
 # Class definition for object: Particle
 # Description: Have a defined position, velocity, acceleration, a method
 # for updating them with changes in time, and an ability to detect if
@@ -20,6 +20,9 @@ class Particle:
 
     def getAcc(self):
         return self.aVec
+
+    def dotProd(self,v1,v2):
+        return v1[0]*v2[0]+v1[1]*v2[1]
 
     def normal(self,v):
         dir_y=(v[1][1]-v[1][0])
@@ -55,14 +58,18 @@ class Particle:
         A=np.array([[l1[0],l1[1]],[l2[0],l2[1]]])
         b=np.array([[-l1[2]],[-l2[2]]])
         x=np.empty([0,0])
-        try:
+        #try:
+        if True:
             x=np.linalg.solve(A,b)
-            distP1_to_I=np.linalg.norm(np.array([[x[0]-px1],[x[1]-py1]]))
-            distP2_to_I=np.linalg.norm(np.array([[x[0]-px2],[x[1]-py2]]))
-            distP1_to_P2=np.linalg.norm(np.array([[px1-px2],[py1-py2]]))
-            minDistToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
+            distP1_to_I=np.linalg.norm(np.array([[x[0]-bx1],[x[1]-by1]]))
+            distP2_to_I=np.linalg.norm(np.array([[x[0]-bx2],[x[1]-by2]]))
+            distP1_to_P2=np.linalg.norm(np.array([[bx1-bx2],[by1-by2]]))
+            minDistIntersectToBoundary=np.linalg.norm((distP1_to_P2 - (distP1_to_I+distP2_to_I)))
+            minDistParticleToBoundary=abs(l1[0]*px2+l1[1]*py2+l1[2])/math.sqrt(math.pow(l1[0],2)+math.pow(l1[1],2))
+            print("minDistParticleToBoundary:",minDistParticleToBoundary, "minDistIntersectToBoundary:",minDistIntersectToBoundary)
 
-            if minDistToBoundary < 0.08:
+            if minDistIntersectToBoundary < 0.01 and minDistParticleToBoundary<0.1:
+                print("Collision!!")
                 return [True,x]
             else:
                 return [False,x]
@@ -87,6 +94,8 @@ class Particle:
                 xI=collision[1][0]
                 yI=collision[1][1]
                 n=self.normal(b)
+                if(self.dotProd(n,vVec_pred) > 0):
+                    n=self.normal(-b)
                 self.vVec=n*np.linalg.norm(vVec_pred)
                 print(collision[1])
                 self.vVec=-vVec_pred
