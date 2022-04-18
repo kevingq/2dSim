@@ -92,10 +92,13 @@ class Particle:
                 n=self.normal(b)
                 if(self.dotProd(n,vVec_pred) > 0):
                     n=self.normal(-b)
+
+                theta=np.arccos(self.dotProd(-vVec_pred,n)/np.linalg.norm(vVec_pred))*180/math.pi)
                 self.vVec=n*np.linalg.norm(vVec_pred)
                 print(collision[1])
                 self.vVec=-vVec_pred
                 self.pVec=np.add(self.pVec,self.vVec*tStep)
+                exit()
                 return True
         self.vVec=vVec_pred
         self.pVec=pVec_pred
